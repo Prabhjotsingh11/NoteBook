@@ -1,32 +1,33 @@
 let newnote = document.getElementById("addTxt");
-// const button = document.getElementById("addBtn");
+let submitBtn = document.getElementById("submitBtn");
 
 function clearInputBox() {
   newnote.value = "";
 }
 
-newnote.addEventListener("keypress", async (event) => {
-  if (event.key === 'Enter') {
-    const urlpost = "http://localhost:8000/takenote";
-    const dataToSend = {
-      notes: newnote.value
-    };
+async function sendNoteToBackend() {
+  const urlpost = "http://localhost:8000/takenote";
+  const dataToSend = {
+    notes: newnote.value
+  };
 
-    try {
-      await fetch(urlpost, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(dataToSend)
-      });
-      render();
-      clearInputBox(); // Clear input box after sending data
-    } catch (error) {
-      console.log(error);
-    }
+  try {
+    await fetch(urlpost, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(dataToSend)
+    });
+    render();
+    clearInputBox();
+  } catch (error) {
+    console.log(error);
   }
-});
+}
+
+
+submitBtn.addEventListener("click", sendNoteToBackend);
 
 async function render() {
   const urlget = "http://localhost:8000/getAll";
